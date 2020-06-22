@@ -23,6 +23,6 @@ export const configLoggerRequestResponse = {
   transports: [transports.console],
   format: winston.format.combine(winston.format.timestamp(), winston.format.metadata(), winston.format.json()),
   meta: true,
-  baseMeta: { service: 'serviceName' },
+  baseMeta: { service: serviceName },
   msg: formatMessage
 };

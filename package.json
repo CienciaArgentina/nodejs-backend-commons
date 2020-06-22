@@ -1,9 +1,9 @@
 {
   "name": "nodejs-backend-commons",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Ciencia Argentina nodejs backend commons",
-  "main": "lib/index.js",
-   "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc",
@@ -15,28 +15,18 @@
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
   },
-  "keywords": [],
+  "publishConfig": { "registry": "https://npm.pkg.github.com/@CienciaArgentina" },
+  "keywords": [
+    "typescript",
+    "github packages",
+    "npm packages",
+    "ciencia",
+    "ciencia argentina"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CienciaArgentina/nodejs-backend-commons.git"
   },
   "author": "Ciencia Argentina",
-  "jest": {
-    "verbose": true,
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "clearMocks": true
-  },
   "dependencies": {
     "express": "^4.17.1"
   },

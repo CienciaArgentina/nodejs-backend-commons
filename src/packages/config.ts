@@ -1,4 +1,4 @@
 export let serviceName = '';
-export const setNameService = (serviceName: string): void => {
-    serviceName = serviceName;
+export const setNameService = (serviceNamePackage: string): void => {
+    serviceName = serviceNamePackage;
 };
