@@ -9,7 +9,7 @@ import { Route,Wrapper } from './types';
 
 const app = express();
 
-export const startServer = (port: number,routes: Route[],applyCommonsMiddlewares: boolean, applyCommonsErrors:boolean,customizablesMiddlewares?: Wrapper[]): void => {
+export const startServer = (port: number,routes: Route[],applyCommonsMiddlewares: boolean = true, applyCommonsErrors:boolean = true,customizablesMiddlewares?: Wrapper[]): void => {
 
   applyRoutes(routes, app);
   if(applyCommonsMiddlewares) applyMiddleware(middlewares, app);

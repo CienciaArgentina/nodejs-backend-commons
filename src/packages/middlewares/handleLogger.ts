@@ -1,4 +1,4 @@
-import { configLoggerRequestResponse } from '../';
+import { configLoggerRequestResponse } from '../logging/logger';
 import { Router } from 'express';
 import expressWinston from 'express-winston';
 
