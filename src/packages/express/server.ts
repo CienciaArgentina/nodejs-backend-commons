@@ -9,11 +9,11 @@ import { Route,Wrapper } from './types';
 
 const app = express();
 
-export const startServer = (port: number,routes: Route[],customizablesMiddlewares?: Wrapper[]): void => {
+export const startServer = (port: number,routes: Route[],applyCommonsMiddlewares: boolean, applyCommonsErrors:boolean,customizablesMiddlewares?: Wrapper[]): void => {
 
   applyRoutes(routes, app);
-  applyMiddleware(middlewares, app);
-  applyMiddleware(errorHandlers, app);
+  if(applyCommonsMiddlewares) applyMiddleware(middlewares, app);
+  if(applyCommonsErrors) applyMiddleware(errorHandlers, app);
   if(customizablesMiddlewares) applyMiddleware(customizablesMiddlewares, app);
 
   const server = http.createServer(app);
