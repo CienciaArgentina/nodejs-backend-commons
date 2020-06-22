@@ -1,3 +1,4 @@
-export * from './common';
-export * from './handleLogger';
-export * from './errorHandlers';
+import { handleBodyRequestParsing, handleCompression, checkHeaders } from './common';
+import { handleLogger } from './handleLogger';
+
+export default [checkHeaders, handleBodyRequestParsing, handleCompression, handleLogger];
