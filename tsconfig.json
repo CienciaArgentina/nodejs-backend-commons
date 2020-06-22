@@ -13,8 +13,7 @@
     "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
     "resolveJsonModule": true /* Include modules imported with '.json' extension */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-    "declaration": true,
-    "noEmit": true
+    "declaration": true
   },
   "exclude": ["node_modules"],
 }
