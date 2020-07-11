@@ -11,10 +11,10 @@ const app = express();
 
 export const startServer = (port: number,routes: Route[],applyCommonsMiddlewares: boolean = true, applyCommonsErrors:boolean = true,customizablesMiddlewares?: Wrapper[]): void => {
 
-  applyRoutes(routes, app);
   if(applyCommonsMiddlewares) applyMiddleware(middlewares, app);
-  if(applyCommonsErrors) applyMiddleware(errorHandlers, app);
   if(customizablesMiddlewares) applyMiddleware(customizablesMiddlewares, app);
+  applyRoutes(routes, app);
+  if(applyCommonsErrors) applyMiddleware(errorHandlers, app);
 
   const server = http.createServer(app);
   server.listen(port, () => logger.info(`Server is running ${port}`));
