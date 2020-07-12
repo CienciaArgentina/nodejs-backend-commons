@@ -1,3 +1,3 @@
-interface EntityCreated {
+export interface EntityCreated {
   id: number;
 }
