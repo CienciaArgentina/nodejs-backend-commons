@@ -1,0 +1,3 @@
+interface EntityCreated {
+  id: number;
+}
