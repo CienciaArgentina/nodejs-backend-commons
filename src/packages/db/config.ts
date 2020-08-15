@@ -1,7 +1,7 @@
 import Knex from 'knex';
-import { Model, ForeignKeyViolationError, ValidationError } from 'objection';
+import { Model } from 'objection';
 
-export const connectDb = (config: any): void => {
+export const connectDb = (config: object): void => {
   const knex = Knex(config);
   Model.knex(knex);
 };

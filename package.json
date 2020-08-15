@@ -1,6 +1,6 @@
 {
-  "name": "nodejs-backend-commons",
-  "version": "1.2.5",
+  "name": "ciencia-argentina-backend-commons",
+  "version": "1.2.6",
   "description": "Ciencia Argentina nodejs backend commons",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,20 +9,27 @@
     "build": "tsc",
     "deploy": "npm publish"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/@CienciaArgentina" },
   "keywords": [
     "typescript",
     "github packages",
     "npm packages",
     "ciencia",
-    "ciencia argentina"],
+    "ciencia argentina"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CienciaArgentina/nodejs-backend-commons.git"
   },
   "author": "Ciencia Argentina",
   "dependencies": {
-    "express": "^4.17.1"
+    "@types/knex": "^0.16.1",
+    "@types/uuid": "^8.3.0",
+    "express": "^4.17.1",
+    "express-winston": "^4.0.5",
+    "knex": "^0.21.4",
+    "objection": "^2.2.2",
+    "uuid": "^8.3.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "typescript": "^3.9.3",
