@@ -2,9 +2,9 @@ import { HttpStatusErrorCode, ErrorCode } from '../../commons/constants';
 export abstract class HTTPClientError extends Error {
   readonly statusCode!: HttpStatusErrorCode;
   readonly name!: string;
-  readonly code!: ErrorCode;
+  readonly code!: string;
 
-  constructor(message: object | string, code: ErrorCode) {
+  constructor(message: object | string, code: string) {
     if (message instanceof Object) {
       super(JSON.stringify(message));
     } else {

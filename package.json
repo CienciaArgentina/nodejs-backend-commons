@@ -1,6 +1,6 @@
 {
   "name": "ciencia-argentina-backend-commons",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Ciencia Argentina nodejs backend commons",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,6 +24,7 @@
   "dependencies": {
     "@types/knex": "^0.16.1",
     "@types/uuid": "^8.3.0",
+    "ajv": "^6.12.4",
     "express": "^4.17.1",
     "express-winston": "^4.0.5",
     "knex": "^0.21.4",

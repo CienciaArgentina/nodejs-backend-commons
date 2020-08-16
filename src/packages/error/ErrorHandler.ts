@@ -1,8 +1,9 @@
 import { Response, NextFunction } from 'express';
 import { HTTPClientError } from './HTTPClientError';
-import { HTTP401Error, HTTP404Error } from './HTTP400Error';
+import { HTTP401Error, HTTP404Error,HTTP400Error } from './HTTP400Error';
 import { logger } from '../';
 import { HttpStatusErrorCode, ErrorDescription, ErrorCode } from '../../commons/constants';
+import  { ValidationError } from './ValidationError';
 
 export const notFoundError = (): void => {
   throw new HTTP404Error();
@@ -14,11 +15,16 @@ export const unauthorizedError = (): void => {
 
 export const clientError = (err: Error, res: Response, next: NextFunction): void => {
   if (err instanceof HTTPClientError) {
-    logger.warn(err);
-    res.status(err.statusCode).send({
+    let errorResponse: object | ValidationError[] | string | undefined = {
       message: err.message,
       code: err.code,
-    });
+    };
+
+    if ((err instanceof HTTP400Error) && err.validationErrors)
+      errorResponse = err.validationErrors;
+
+    logger.warn({ errorResponse });
+    res.status(err.statusCode).send(errorResponse);
   } else {
     next(err);
   }
@@ -26,7 +32,7 @@ export const clientError = (err: Error, res: Response, next: NextFunction): void
 
 const productionEnv = 'production';
 export const serverError = (err: Error, res: Response, next: NextFunction): void => {
-  logger.error(err);
+  logger.error({err});
   if (process.env.NODE_ENV === productionEnv) {
     res.status(HttpStatusErrorCode.InternalServerError).send(ErrorDescription.InternalServerError);
   } else {
