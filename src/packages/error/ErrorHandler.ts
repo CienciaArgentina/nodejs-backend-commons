@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { HTTPClientError } from './HTTPClientError';
-import { HTTP401Error, HTTP404Error,HTTP400Error } from './HTTP400Error';
+import { HTTP401Error, HTTP404Error,HttpValidationError } from './HTTP400Error';
 import { logger } from '../';
 import { HttpStatusErrorCode, ErrorDescription, ErrorCode } from '../../commons/constants';
 import  { ValidationError } from './ValidationError';
@@ -20,8 +20,8 @@ export const clientError = (err: Error, res: Response, next: NextFunction): void
       code: err.code,
     };
 
-    if ((err instanceof HTTP400Error) && err.message.hasOwnProperty('errors'))
-      errorResponse = err.message;
+    if ((err instanceof HttpValidationError))
+      errorResponse = err.validationErrors;
 
     logger.warn({ errorResponse });
     res.status(err.statusCode).send(errorResponse);
