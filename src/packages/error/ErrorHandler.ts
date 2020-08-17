@@ -15,13 +15,13 @@ export const unauthorizedError = (): void => {
 
 export const clientError = (err: Error, res: Response, next: NextFunction): void => {
   if (err instanceof HTTPClientError) {
-    let errorResponse: object | ValidationError[] | string | undefined = {
+    let errorResponse: object | ValidationError | string | undefined = {
       message: err.message,
       code: err.code,
     };
 
-    if ((err instanceof HTTP400Error) && err.validationErrors)
-      errorResponse = err.validationErrors;
+    if ((err instanceof HTTP400Error) && err.message.hasOwnProperty('errors'))
+      errorResponse = err.message;
 
     logger.warn({ errorResponse });
     res.status(err.statusCode).send(errorResponse);

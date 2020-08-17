@@ -1,6 +1,12 @@
 
 export interface ValidationError {
-  code:string,
-  message: string | undefined,
-  property?: string
+  id: string,
+  status: number,
+  message?: string,
+  errors?: CienciaError[]
+}
+
+export interface CienciaError {
+  detail?: string,
+  code: string
 }
