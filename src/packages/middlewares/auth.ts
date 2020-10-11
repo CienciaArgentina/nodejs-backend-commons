@@ -8,6 +8,6 @@ export const authMiddleware = (router: Router): void => {
  
     if (!token) throw new HTTP400Error();
     
-    const payload = jwt.verify(token, process.env.JWT_SIGNATURE || '');
+    res.locals.jwt = jwt.verify(token, process.env.JWT_SIGNATURE || ''); 
     next();
 })};
