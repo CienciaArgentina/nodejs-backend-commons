@@ -4,11 +4,13 @@ import { HTTP400Error } from '../error';
 
 export const authMiddleware = (router: Router): void => {
   router.use((req: Request, res: Response, next: NextFunction) => {
-    // const token = <string>req.headers['access-token'];
+    if (req.path === process.env.READINESS || req.path === process.env.LIVENESS) next();
 
-    // if (!token) throw new HTTP400Error();
+    const token = <string>req.headers['access-token'];
 
-    // res.locals.jwt = jwt.verify(token, process.env.JWT_SIGNATURE || '');
+    if (!token) throw new HTTP400Error();
+
+    res.locals.jwt = jwt.decode(token);
     next();
   });
 };
