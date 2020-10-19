@@ -21,7 +21,7 @@ winston.exceptions.handle(transports.console);
 //Config log request and response
 const formatMessage = 'HTTP {{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}';
 export const configLoggerRequestResponse = {
-  ignoredRoutes: [process.env.LIVENESS, process.env.READINESS],
+  ignoredRoutes: [<string>process.env.LIVENESS, <string>process.env.READINESS],
   transports: [transports.console],
   format: winston.format.combine(winston.format.timestamp(), winston.format.metadata(), winston.format.json()),
   meta: true,
