@@ -4,7 +4,7 @@ import { HTTP400Error } from '../error';
 
 export const authMiddleware = (router: Router): void => {
   router.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path === process.env.READINESS || req.path === process.env.LIVENESS) next();
+    if (req.path === process.env.READINESS || req.path === process.env.LIVENESS) return next();
 
     const token = <string>req.headers['access-token'];
 

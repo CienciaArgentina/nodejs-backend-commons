@@ -1,28 +1,30 @@
 import winston, { createLogger, Logger } from 'winston';
-import { CommonPath } from '../../commons/constants';
-import { serviceName } from '../config'
+import { serviceName } from '../config';
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const transports = {
   console: new winston.transports.Console(),
 };
 
 const levelLogger = process.env.LOGGER_APP_LEVEL || 'info';
 
-export const logger : Logger = createLogger({
+export const logger: Logger = createLogger({
   level: levelLogger,
   defaultMeta: { service: serviceName },
   format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
   transports: [transports.console],
-})
+});
 
 winston.exceptions.handle(transports.console);
 
 //Config log request and response
 const formatMessage = 'HTTP {{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}';
 export const configLoggerRequestResponse = {
-  ignoredRoutes: [CommonPath.Health],
+  ignoredRoutes: [process.env.LIVENESS, process.env.READINESS],
   transports: [transports.console],
   format: winston.format.combine(winston.format.timestamp(), winston.format.metadata(), winston.format.json()),
   meta: true,
   baseMeta: { service: serviceName },
-  msg: formatMessage
+  msg: formatMessage,
 };

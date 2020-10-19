@@ -12,5 +12,5 @@ export enum HttpStatusErrorCode {
 }
 
 export enum CommonPath {
-  Health = '/health',
+  Health = '/ping',
 }
