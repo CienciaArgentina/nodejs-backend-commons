@@ -6,7 +6,7 @@ dotenv.config();
 
 export const authMiddleware = (router: Router): void => {
   router.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path === process.env.READINESS || req.path === process.env.LIVENESS || process.env.APPLY_AUTH)
+    if (req.path === process.env.READINESS || req.path === process.env.LIVENESS || process.env.DONT_APPLY_AUTH)
       return next();
 
     const token = <string>req.headers['access-token'];
