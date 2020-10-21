@@ -1,6 +1,6 @@
 {
   "name": "ciencia-argentina-backend-commons",
-  "version": "1.4.8",
+  "version": "1.4.81",
   "description": "Ciencia Argentina nodejs backend commons",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
