@@ -1,27 +1,17 @@
 import { Response, NextFunction } from 'express';
-import { HTTPClientError } from './HTTPClientError';
-import { HTTP401Error, HTTP404Error,HttpValidationError } from './HTTP400Error';
-import { logger } from '../';
-import { HttpStatusErrorCode, ErrorDescription, ErrorCode } from '../../commons/constants';
-import  { ValidationError } from './ValidationError';
-
-export const notFoundError = (): void => {
-  throw new HTTP404Error();
-};
-
-export const unauthorizedError = (): void => {
-  throw new HTTP401Error();
-};
+import { HTTP400Error, HTTPClientError, ValidationError } from '.';
+import { logger } from '..';
+import { HttpStatusErrorCode, Environment, ErrorDescription, ErrorCode } from '../../commons/constants';
+import { v1 as uuidv1 } from 'uuid';
 
 export const clientError = (err: Error, res: Response, next: NextFunction): void => {
   if (err instanceof HTTPClientError) {
-    let errorResponse: object | ValidationError | string | undefined = {
+    let errorResponse: object | ValidationError[] | string | undefined = {
       message: err.message,
       code: err.code,
     };
 
-    if ((err instanceof HttpValidationError))
-      errorResponse = err.validationErrors;
+    if (err instanceof HTTP400Error && err.validationErrors) errorResponse = err.validationErrors;
 
     logger.warn({ errorResponse });
     res.status(err.statusCode).send(errorResponse);
@@ -30,11 +20,20 @@ export const clientError = (err: Error, res: Response, next: NextFunction): void
   }
 };
 
-const productionEnv = 'production';
 export const serverError = (err: Error, res: Response, next: NextFunction): void => {
-  logger.error({err});
-  if (process.env.NODE_ENV === productionEnv) {
-    res.status(HttpStatusErrorCode.InternalServerError).send(ErrorDescription.InternalServerError);
+  const errorId = uuidv1();
+  logger.error({
+    id: errorId,
+    name: err.name,
+    message: err.message,
+    stack: err.stack,
+  });
+  if (process.env.NODE_ENV === Environment.Production) {
+    res.status(HttpStatusErrorCode.InternalServerError).send({
+      id: errorId,
+      message: ErrorDescription.InternalServerError,
+      code: ErrorCode.InternalServerError,
+    });
   } else {
     res.status(HttpStatusErrorCode.InternalServerError).send({
       message: err.message,
