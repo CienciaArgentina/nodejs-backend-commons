@@ -5,7 +5,7 @@ import { applyMiddleware, applyRoutes } from './util';
 import { logger } from '../';
 import middlewares from '../middlewares';
 import errorHandlers from '../middlewares/errorHandlers';
-import { Route,Wrapper } from './types';
+import { Route, Wrapper } from './types';
 
 const app = express();
 
