@@ -1,20 +1,20 @@
 import { Response, NextFunction } from 'express';
-import { HTTP400Error, HTTPClientError, HttpValidationError, ValidationError } from '.';
+import { HTTPClientError } from '.';
 import { logger } from '..';
 import { HttpStatusErrorCode, Environment, ErrorDescription, ErrorCode } from '../../commons/constants';
 import { v1 as uuidv1 } from 'uuid';
 
 export const clientError = (err: Error, res: Response, next: NextFunction): void => {
+  logger.info(err);
   if (err instanceof HTTPClientError) {
-    let errorResponse: object | ValidationError | string | undefined = {
-      message: err.message,
-      code: err.code,
-    };
-
-    if (err instanceof HttpValidationError) errorResponse = err.validationErrors;
-
-    logger.warn({ errorResponse });
-    res.status(err.statusCode).send(errorResponse);
+    const { id, status, message, errors } = err;
+    res.status(err.status).send({
+      id: id,
+      status: status,
+      message: message,
+      errors: errors,
+    });
+    return next();
   } else {
     next(err);
   }

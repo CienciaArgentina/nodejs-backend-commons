@@ -1,16 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { logger } from '..';
-import { HTTPClientError } from '../error/HTTPClientError';
-
-export class HTTPApiCallError extends HTTPClientError {
-  readonly statusCode!: number;
-  readonly errorRequest?: AxiosError;
-  constructor(message: object, statusCode: number, code: string, error?: AxiosError) {
-    super(message, code);
-    this.errorRequest = error;
-    this.statusCode = statusCode;
-  }
-}
+import http from 'http';
+import https from 'https';
 
 const handleResponse = <T>(response: AxiosResponse): T => {
   logger.info({
@@ -23,11 +14,7 @@ const handleResponse = <T>(response: AxiosResponse): T => {
 };
 
 const handleError = (error: AxiosError): Promise<void> => {
-  if (error.response && error.response.status) {
-    logger.error(error);
-    throw new HTTPApiCallError(error.response.data, error.response.status, error.response.data.code, error);
-  }
-
+  logger.error(error);
   return Promise.reject(error);
 };
 
@@ -38,6 +25,11 @@ const initializeResponseInterceptor = (instance: AxiosInstance): void => {
 export const httpClient = (url: string, handleResponse = true): AxiosInstance => {
   const instance = axios.create({
     baseURL: url,
+    timeout: 60000,
+    httpAgent: new http.Agent({ keepAlive: true }),
+    httpsAgent: new https.Agent({ keepAlive: true }),
+    maxRedirects: 10,
+    maxContentLength: 50 * 1000 * 1000, //50MBs
   });
   if (handleResponse) initializeResponseInterceptor(instance);
   return instance;

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction, Handler } from 'express';
 import jwt from 'jsonwebtoken';
-import { HTTP400Error, HTTP401Error } from '../error';
 import dotenv from 'dotenv';
 import { httpClient } from '../httpClient';
 import { HttpStatusErrorCode } from '../../commons/constants';
+import { HTTPCienciaError } from '../error';
 dotenv.config();
 
 const verifyJwt = async (jwt: string, claim?: string): Promise<void> => {
@@ -17,8 +17,10 @@ const verifyJwt = async (jwt: string, claim?: string): Promise<void> => {
     })
     .catch((e) => {
       const message = e.errorRequest.response.data.message;
-      if (e.statusCode === HttpStatusErrorCode.Unauthorized) throw new HTTP401Error(message);
-      if (e.statusCode === HttpStatusErrorCode.BadRequest) throw new HTTP400Error(message);
+      if (e.statusCode === HttpStatusErrorCode.Unauthorized)
+        throw new HTTPCienciaError(HttpStatusErrorCode.Unauthorized, message);
+      if (e.statusCode === HttpStatusErrorCode.BadRequest)
+        throw new HTTPCienciaError(HttpStatusErrorCode.BadRequest, message);
       throw new Error(e);
     });
 };
@@ -26,7 +28,7 @@ const verifyJwt = async (jwt: string, claim?: string): Promise<void> => {
 export const authMiddleware = (claim?: string): Handler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const token = <string>req.headers['authorization'];
-    if (!token) throw new HTTP400Error();
+    if (!token) throw new HTTPCienciaError(HttpStatusErrorCode.BadRequest);
 
     await verifyJwt(token, claim);
 
