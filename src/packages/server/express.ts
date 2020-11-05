@@ -6,6 +6,7 @@ import { logger } from '../';
 import middlewares from '../middlewares';
 import errorHandlers from '../middlewares/errorHandlers';
 import { Route, Wrapper } from './types';
+import prometheusRoute from './prometheus';
 
 const app = express();
 
@@ -18,6 +19,8 @@ export const startServer = (
 ): void => {
   if (applyCommonsMiddlewares) applyMiddleware(middlewares, app);
   if (customizablesMiddlewares) applyMiddleware(customizablesMiddlewares, app);
+
+  applyRoutes(prometheusRoute, app);
   applyRoutes(routes, app);
   if (applyCommonsErrors) applyMiddleware(errorHandlers, app);
 
