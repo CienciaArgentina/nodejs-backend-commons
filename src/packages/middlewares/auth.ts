@@ -16,11 +16,11 @@ const verifyJwt = async (jwt: string, claim?: string): Promise<void> => {
       required_claim: claim,
     })
     .catch((e) => {
-      const message = e.errorRequest.response.data.message;
+      const errors = e.response.data.errors;
       if (e.statusCode === HttpStatusErrorCode.Unauthorized)
-        throw new HTTPCienciaError(HttpStatusErrorCode.Unauthorized, message);
+        throw new HTTPCienciaError(HttpStatusErrorCode.Unauthorized, errors);
       if (e.statusCode === HttpStatusErrorCode.BadRequest)
-        throw new HTTPCienciaError(HttpStatusErrorCode.BadRequest, message);
+        throw new HTTPCienciaError(HttpStatusErrorCode.BadRequest, errors);
       throw new Error(e);
     });
 };
