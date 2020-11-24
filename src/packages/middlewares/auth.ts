@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { httpClient } from '../httpClient';
 import { HttpStatusErrorCode } from '../../commons/constants';
 import { HTTPCienciaError } from '../error';
+import { JwtToken } from '../auth/JwtToken';
 dotenv.config();
 
 const verifyJwt = async (jwt: string, claim?: string): Promise<void> => {
@@ -26,6 +27,13 @@ const verifyJwt = async (jwt: string, claim?: string): Promise<void> => {
     });
 };
 
+const decode = (token: string): JwtToken => {
+  const jwtToken = <JwtToken>jwt.decode(token);
+  const roles = JSON.parse(<string>jwtToken.roles);
+  jwtToken.roles = roles;
+  return jwtToken;
+};
+
 export const authMiddleware = (claim?: string): Handler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const token = <string>req.headers['authorization'];
@@ -33,7 +41,7 @@ export const authMiddleware = (claim?: string): Handler => {
 
     await verifyJwt(token, claim);
 
-    res.locals.jwt = jwt.decode(token);
+    res.locals.jwt = decode(token);
     next();
   };
 };
