@@ -29,7 +29,7 @@
     "@types/knex": "^0.16.1",
     "@types/uuid": "^8.3.0",
     "ajv": "^6.12.4",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-winston": "^4.0.5",
